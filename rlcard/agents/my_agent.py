@@ -10,6 +10,7 @@ from rlcard.utils.utils import remove_illegal, Memory
 
 
 class DQN_conf:
+    scope = "DQN"
     num_states = None
     num_actions = None
     replay_memory_size = None  # Size of the replay memory
@@ -33,6 +34,8 @@ class DQN_agent:
     def __init__(self, conf):
         self.use_raw = True
         self.conf = conf
+
+        self.scope = self.conf.scope
 
         self.total_t = 1  # total timesteps
         self.train_t = 0  # train timesteps
@@ -65,7 +68,9 @@ class DQN_agent:
         # Save to memory
         self.feed_memory(state["obs"], action, reward, next_state["obs"], done)
         self.total_t += 1
-        if self.total_t % self.conf.train_every:
+
+        tmp = self.total_t - self.conf.replay_memory_init_size
+        if tmp >= 0 and tmp % self.conf.train_every == 0:
             self.train()
 
     def train(self):
@@ -76,14 +81,15 @@ class DQN_agent:
             next_state_batch,
             done_batch,
         ) = self.memory.sample()
+
         q_values_next = self.q_estimator.predict_nograd(next_state_batch)
         best_actions = np.argmax(q_values_next, axis=1)
 
         target_batch = (
             reward_batch
             + np.invert(done_batch).astype(np.float32)
-            * self.discount_factor
-            * q_values_next[np.arange(self.batch_size), best_actions]
+            * self.conf.discount_factor
+            * q_values_next[np.arange(self.conf.batch_size), best_actions]
         )
 
         state_batch = np.array(state_batch)
@@ -102,6 +108,7 @@ class DQN_agent:
         A = self.predict(states["obs"])
         A = remove_illegal(A, states["legal_actions"])
         action = np.random.choice(np.arange(len(A)), p=A)
+        return action
 
     def eval_step(self, states):
         q_values = self.q_estimator.predict_nograd(np.expand_dims(states["obs"], 0))[0]
@@ -167,7 +174,7 @@ class Estimator(object):
         q_action = self.qnet(s)
 
         # (batch, action_num) -> (batch, )
-        Q = torch.gather(q_as, dim=-1, index=a.unsqueeze(-1)).squeeze(-1)
+        Q = torch.gather(q_action, dim=-1, index=a.unsqueeze(-1)).squeeze(-1)
 
         # Backprop
         batch_loss = self.loss_fn(Q, y)
