@@ -1,6 +1,9 @@
 ''' A toy example of self playing for Blackjack
     Maybe it is used to play against multiple trained agents if someone can rebuild a game code :)
 '''
+import sys
+sys.path.append('.')
+
 
 import rlcard
 from rlcard.agents import RandomAgent as RandomAgent
