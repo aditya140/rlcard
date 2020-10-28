@@ -207,7 +207,6 @@ class DQNAgent(object):
             next_state_batch,
             done_batch,
         ) = self.memory.sample()
-        print(action_batch)
 
         # Calculate best next actions using Q-network (Double DQN)
         q_values_next = self.q_estimator.predict_nograd(next_state_batch)

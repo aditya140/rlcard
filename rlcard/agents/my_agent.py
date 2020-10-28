@@ -32,7 +32,7 @@ class DQN_conf:
 
 class DQN_agent:
     def __init__(self, conf):
-        self.use_raw = True
+        self.use_raw = False
         self.conf = conf
 
         self.scope = self.conf.scope
@@ -136,7 +136,7 @@ class DQN_agent:
         return q_value
 
     def load(self, model_weights):
-        self.q_estimator.load_state_dict(model_weights)
+        self.q_estimator.qnet.load_state_dict(model_weights)
 
 
 class Estimator(object):
