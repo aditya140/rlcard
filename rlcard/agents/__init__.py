@@ -22,7 +22,7 @@ if "tensorflow" in installed_packages:
 if "torch" in installed_packages:
     from rlcard.agents.dqn_agent_pytorch import DQNAgent as DQNAgentPytorch
     from rlcard.agents.nfsp_agent_pytorch import NFSPAgent as NFSPAgentPytorch
-    from rlcard.agents.my_agent import DQN_agent, DQN_conf
+    from rlcard.agents.single_dqn_agent import DQN_agent, DQN_conf
 from rlcard.agents.cfr_agent import CFRAgent
 from rlcard.agents.limit_holdem_human_agent import HumanAgent as LimitholdemHumanAgent
 from rlcard.agents.nolimit_holdem_human_agent import (
@@ -32,3 +32,9 @@ from rlcard.agents.leduc_holdem_human_agent import HumanAgent as LeducholdemHuma
 from rlcard.agents.blackjack_human_agent import HumanAgent as BlackjackHumanAgent
 from rlcard.agents.random_agent import RandomAgent
 from rlcard.agents.uno_human_agent import HumanAgent as UnoHumanAgent
+from rlcard.agents.MCCFR_agents import (
+    ChanceSampling_CFR,
+    ExternalSampling_CFR,
+    OutcomeSampling_CFR,
+)
+from rlcard.agents.mccfs import EMCCFRAgent

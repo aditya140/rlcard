@@ -91,7 +91,7 @@ def train_uno():
     # Set the iterations numbers and how frequently we evaluate the performance
     evaluate_every = 100
     evaluate_num = 1000
-    episode_num = 100000
+    episode_num = 10000
 
     # The intial memory size
     memory_init_size = 1000
@@ -159,3 +159,4 @@ def train_uno():
 
 if __name__ == "__main__":
     train_uno()
+

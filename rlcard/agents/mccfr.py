@@ -7,10 +7,10 @@ import pickle
 from rlcard.utils.utils import *
 
 
-class CFRAgent:
+class MCCFRAgent:
     """Implement CFR algorithm"""
 
-    def __init__(self, env, model_path="./cfr_model"):
+    def __init__(self, env, epsilon=0.1, tau=1, beta=0, model_path="./cfr_model"):
         """Initilize Agent
 
         Args:
@@ -21,9 +21,14 @@ class CFRAgent:
         self.model_path = model_path
 
         # A policy is a dict state_str -> action probabilities
+        # policy = σ
         self.policy = collections.defaultdict(list)
-        self.average_policy = collections.defaultdict(np.array)
 
+        # average_policy = s
+        self.average_policy = collections.defaultdict(np.array)
+        self.explorability = explorability
+        self.tau = tau
+        self.beta = beta
         # Regret is a dict state_str -> action regrets
         self.regrets = collections.defaultdict(np.array)
 
@@ -88,7 +93,6 @@ class CFRAgent:
             return state_utility
 
         # If it is current player, we record the policy and compute regret
-
         # player_prob = π_(i)
         player_prob = probs[current_player]
         # counterfactual_prob = π_(-i)
@@ -111,7 +115,6 @@ class CFRAgent:
             regret = counterfactual_prob * (
                 action_utilities[action][current_player] - player_state_utility
             )
-            print(regret)
             # r[I,a] = r[I,a] + π_(-i) * (v_σ(I->a)[a] - v_σ)
             self.regrets[obs][action] += regret
 
@@ -125,7 +128,6 @@ class CFRAgent:
     def update_policy(self):
         """Update policy based on the current regrets"""
         for obs in self.regrets:
-
             self.policy[obs] = self.regret_matching(obs)
 
     def regret_matching(self, obs):
