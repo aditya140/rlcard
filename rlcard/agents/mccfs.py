@@ -11,7 +11,7 @@ class EMCCFRAgent:
     ''' Implement CFR algorithm
     '''
 
-    def __init__(self, env, model_path='./cfr_model', epsilon=0.1, beta=0.1, tau=0.1):
+    def __init__(self, env, model_path='./emccfr_model', epsilon=0.1, beta=1, tau=1):
         ''' Initilize Agent
 
         Args:

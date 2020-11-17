@@ -17,7 +17,7 @@ def train_blackjack():
     # Set the iterations numbers and how frequently we evaluate the performance
     evaluate_every = 100
     evaluate_num = 1000
-    episode_num = 100000
+    episode_num = 3000
 
     # The intial memory size
     memory_init_size = 1000
@@ -91,7 +91,7 @@ def train_uno():
     # Set the iterations numbers and how frequently we evaluate the performance
     evaluate_every = 100
     evaluate_num = 1000
-    episode_num = 10000
+    episode_num = 3000
 
     # The intial memory size
     memory_init_size = 1000
@@ -165,7 +165,7 @@ def train_leduc_holdem_poker():
     # Set the iterations numbers and how frequently we evaluate the performance
     evaluate_every = 100
     evaluate_num = 1000
-    episode_num = 10000
+    episode_num = 3000
 
     # The intial memory size
     memory_init_size = 1000
@@ -233,13 +233,13 @@ def train_leduc_holdem_poker():
 
 def train_mahjong():
     # Make environment
-    env = rlcard.make("leduc-holdem", config={"seed": 0})
-    eval_env = rlcard.make("leduc-holdem", config={"seed": 0})
+    env = rlcard.make("mahjong", config={"seed": 0})
+    eval_env = rlcard.make("mahjong", config={"seed": 0})
 
     # Set the iterations numbers and how frequently we evaluate the performance
     evaluate_every = 100
     evaluate_num = 1000
-    episode_num = 10000
+    episode_num = 3000
 
     # The intial memory size
     memory_init_size = 1000
@@ -306,7 +306,7 @@ def train_mahjong():
 
 
 if __name__ == "__main__":
-    train_uno()
-    train_blackjack()
-    train_leduc_holdem_poker()
+    # train_uno()
+    # train_blackjack()
+    # train_leduc_holdem_poker()
     train_mahjong()

@@ -18,6 +18,10 @@ if 'tensorflow' in installed_packages:
         model_id = 'leduc-holdem-nfsp',
         entry_point='rlcard.models.pretrained_models:LeducHoldemNFSPModel')
 
+    register(
+        model_id = 'uno-nfsp',
+        entry_point='rlcard.models.pretrained_models:UnoNFSPModel')
+
 if 'torch' in installed_packages:
     register(
         model_id = 'leduc-holdem-nfsp-pytorch',

@@ -110,3 +110,49 @@ class LeducHoldemCFRModel(Model):
         '''
         return [self.agent, self.agent]
 
+
+
+
+
+
+
+class UnoNFSPModel(Model):
+    ''' A pretrained model on Leduc Holdem with NFSP
+    '''
+
+    def __init__(self):
+        ''' Load pretrained model
+        '''
+        import tensorflow as tf
+        from rlcard.agents import NFSPAgent
+        self.graph = tf.Graph()
+        self.sess = tf.Session(graph=self.graph)
+
+        env = rlcard.make('uno')
+        with self.graph.as_default():
+            self.nfsp_agents = []
+            for i in range(env.player_num):
+                agent = NFSPAgent(self.sess,
+                                  scope='nfsp' + str(i),
+                                  action_num=env.action_num,
+                                  state_shape=env.state_shape,
+                                  hidden_layers_sizes=[512,512],
+                                  q_mlp_layers=[512,512])
+                self.nfsp_agents.append(agent)
+
+        check_point_path = os.path.join(ROOT_PATH, 'uno_nfsp')
+        with self.sess.as_default():
+            with self.graph.as_default():
+                saver = tf.train.Saver()
+                saver.restore(self.sess, tf.train.latest_checkpoint(check_point_path))
+    @property
+    def agents(self):
+        ''' Get a list of agents for each position in a the game
+
+        Returns:
+            agents (list): A list of agents
+
+        Note: Each agent should be just like RL agent with step and eval_step
+              functioning well.
+        '''
+        return self.nfsp_agents

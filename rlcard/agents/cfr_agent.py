@@ -111,7 +111,6 @@ class CFRAgent:
             regret = counterfactual_prob * (
                 action_utilities[action][current_player] - player_state_utility
             )
-            print(regret)
             # r[I,a] = r[I,a] + π_(-i) * (v_σ(I->a)[a] - v_σ)
             self.regrets[obs][action] += regret
 
