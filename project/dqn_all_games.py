@@ -272,8 +272,8 @@ def train_mahjong():
     agent = DQN_agent(agent_conf)
 
     random_agent = RandomAgent(action_num=eval_env.action_num)
-    env.set_agents([agent, random_agent])
-    eval_env.set_agents([agent, random_agent])
+    env.set_agents([agent, random_agent, random_agent, random_agent])
+    eval_env.set_agents([agent, random_agent, random_agent, random_agent])
 
     logger = Logger(log_dir)
 
